@@ -1,0 +1,5 @@
+# Local project identifier; this does not link a remote Supabase project.
+project_id = "nutrition-app"
+
+[db.seed]
+enabled = false
