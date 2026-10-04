@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+  const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+
+  if (supabaseUrl.trim().isEmpty || supabaseAnonKey.trim().isEmpty) {
+    throw StateError(
+      'Missing Supabase configuration. Provide non-empty '
+      '--dart-define=SUPABASE_URL and --dart-define=SUPABASE_ANON_KEY '
+      'with the project URL and public client key.',
+    );
+  }
+
+  await Supabase.initialize(
+    url: supabaseUrl,
+    publishableKey: supabaseAnonKey,
+  );
+
   runApp(const MyApp());
 }
 
