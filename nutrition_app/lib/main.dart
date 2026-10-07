@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'repositories/food_repository.dart';
+import 'repositories/user_profile_repository.dart';
 import 'screens/auth_gate.dart';
 
 Future<void> main() async {
@@ -22,13 +23,25 @@ Future<void> main() async {
 
   final auth = Supabase.instance.client.auth;
 
-  runApp(MyApp(repository: FoodRepository(), auth: auth));
+  runApp(
+    MyApp(
+      repository: FoodRepository(),
+      profileRepository: UserProfileRepository(),
+      auth: auth,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.repository, required this.auth});
+  const MyApp({
+    super.key,
+    required this.repository,
+    required this.profileRepository,
+    required this.auth,
+  });
 
   final FoodRepository repository;
+  final UserProfileRepository profileRepository;
   final GoTrueClient auth;
 
   @override
@@ -38,7 +51,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: AuthGate(repository: repository, auth: auth),
+      home: AuthGate(
+        repository: repository,
+        profileRepository: profileRepository,
+        auth: auth,
+      ),
     );
   }
 }
