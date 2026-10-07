@@ -120,23 +120,21 @@ void main() {
         find.byType(UserProfileScreen),
       );
       expect(screen.userId, auth.currentSession!.user.id);
-      Future<void> choose(String key, String label) async {
-        await tester.ensureVisible(find.byKey(ValueKey(key)));
-        await tester.tap(find.byKey(ValueKey(key)));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text(label).last);
-        await tester.pumpAndSettle();
-      }
-
-      await choose('sex', 'Masculin');
+      await tester.tap(find.byKey(const ValueKey('male')));
       await tester.tap(find.byKey(const ValueKey('birthDate')));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Selectează'));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(const ValueKey('height')), '180');
-      await tester.enterText(find.byKey(const ValueKey('weight')), '80');
-      await choose('activity', 'Sedentar — puțină mișcare');
-      await choose('goal', 'Menținere');
+      for (var step = 0; step < 3; step++) {
+        await tester.tap(find.byKey(const ValueKey('continue')));
+        await tester.pumpAndSettle();
+      }
+      await tester.tap(find.byKey(const ValueKey('sedentary')));
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('continue')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('maintain')));
+      await tester.pump();
       await tester.ensureVisible(find.byKey(const ValueKey('saveProfile')));
       await tester.tap(find.byKey(const ValueKey('saveProfile')));
       await tester.pumpAndSettle();

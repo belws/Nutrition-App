@@ -6,7 +6,7 @@ import '../repositories/user_profile_repository.dart';
 import '../models/user_profile.dart';
 import 'user_profile_screen.dart';
 import 'auth_screen.dart';
-import 'food_catalog_screen.dart';
+import 'authenticated_shell.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({
@@ -103,7 +103,11 @@ class _ProfileGateState extends State<_ProfileGate> {
             (snapshot.connectionState == ConnectionState.done &&
                 !snapshot.hasError &&
                 snapshot.data != null)) {
-          return FoodCatalogScreen(
+          return AuthenticatedShell(
+            key: ValueKey(widget.userId),
+            profile: _saved ?? snapshot.requireData!,
+            email: widget.auth.currentSession?.user.email,
+            profileRepository: widget.profileRepository,
             repository: widget.repository,
             onSignOut: widget.auth.signOut,
           );
